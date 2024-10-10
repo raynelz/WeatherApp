@@ -7,13 +7,34 @@
 
 import UIKit
 
-class ViewController: UIViewController {
 
+class ViewController: UIViewController {
+    // MARK: - UI Elements
+    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
     }
-
-
 }
 
+// MARK: - Main Private Methods
+
+private extension ViewController {
+    func setupViews() {
+        
+    }
+    
+    func setupAppearance() {
+        
+    }
+    
+    func setupLayout() {
+        
+    }
+}
+
+// MARK: - Other Private Methods
+private extension ViewController {
+    
+}
