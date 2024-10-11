@@ -18,7 +18,7 @@
 		859FE29B2CB800EA008888C4 /* Exceptions for "WeatherApp" folder in "WeatherApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Resources/Info.plist,
+				Info.plist,
 			);
 			target = 859FE2882CB800E9008888C4 /* WeatherApp */;
 		};
