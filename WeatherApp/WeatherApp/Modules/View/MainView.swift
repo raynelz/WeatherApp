@@ -15,6 +15,7 @@ class MainView: UIView {
     
     private let maxTemperatureLabel = UILabel()
     private let minTemperatureLabel = UILabel()
+    private let averageTemperatureStack = UIStackView()
     
     private let humidityLabel = UILabel()
     private let windSpeedLabel = UILabel()
@@ -43,7 +44,8 @@ class MainView: UIView {
 // MARK: - Public Methods
 extension MainView {
     func updateData(_ data: WeatherData) {
-        
+        maxTemperatureLabel.attributedText = addAttachmentsToText(text: data.maxTemperature, arrow: SFArrowDirection.up)
+        minTemperatureLabel.attributedText = addAttachmentsToText(text: data.minTemperature, arrow: SFArrowDirection.down)
     }
 }
 
@@ -52,13 +54,13 @@ extension MainView {
 
 private extension MainView {
     func setupViews() {
-        addSubviews(backgroundImageView, picker)
+        addSubviews(backgroundImageView, picker, averageTemperatureStack)
     }
     
     func setupAppearance() {
         self.backgroundColor = .white
         
-        temperatureLabelsSetup()
+        makeTemperatureStack()
     }
     
     func setupLayout() {
@@ -71,29 +73,48 @@ private extension MainView {
             $0.horizontalEdges.equalToSuperview().inset(10)
         }
         
+        averageTemperatureStack.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(10)
+            $0.centerY.equalToSuperview()
+        }
     }
 }
 
 // MARK: - Other Private Methods
 private extension MainView {
-    func temperatureLabelsSetup() {
-        
+    func makeTemperatureStack() {
+        averageTemperatureStack.axis = .vertical
+        averageTemperatureStack.spacing = 30
+        averageTemperatureStack.distribution = .fillEqually
+        averageTemperatureStack.alignment = .center
+        [maxTemperatureLabel, minTemperatureLabel].forEach { averageTemperatureStack.addArrangedSubview($0) }
     }
-    func addArrowToText(text: String, arrow: SFArrowDirection) -> String {
+    
+    func addAttachmentsToText(text: Double, arrow: SFArrowDirection) -> NSAttributedString {
         
+        let text = String(text)
+        let size: CGFloat = 20
+        let attachmentSize: CGFloat = size - 2
         
         let symbolAttachment = NSTextAttachment()
-        symbolAttachment.image = UIImage(systemName: arrow.rawValue)
-        
+        symbolAttachment.image = UIImage(systemName: arrow.rawValue)?.applyingSymbolConfiguration(.init(pointSize: attachmentSize))!.withTintColor(.text)
         let symbolString = NSAttributedString(attachment: symbolAttachment)
         
+        let degreesAttachment = NSTextAttachment()
+        degreesAttachment.image = UIImage(systemName: "degreesign.celsius")?.applyingSymbolConfiguration(.init(pointSize: attachmentSize))!.withTintColor(.text)
+        let degreesString = NSAttributedString(attachment: degreesAttachment)
+        
         let attributedText = NSAttributedString(string: text, attributes: [
-            .font: UIFont.systemFont(ofSize: 14, weight: .medium),
-            .foregroundColor: UIColor.text,
-            .attachment: symbolAttachment
+            .font: UIFont.systemFont(ofSize: size, weight: .medium),
+            .foregroundColor: UIColor.text
         ])
         
+        let combinedText = NSMutableAttributedString()
+        combinedText.append(symbolString)
+        combinedText.append(NSAttributedString(string: "  "))
+        combinedText.append(attributedText)
+        combinedText.append(degreesString)
         
-        return attributedText.string
+        return combinedText
     }
 }
