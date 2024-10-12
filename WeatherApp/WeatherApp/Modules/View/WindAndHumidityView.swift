@@ -64,5 +64,15 @@ private extension WindAndHumidityView {
 }
 
 private extension WindAndHumidityView {
-    
+    func makeText(elements: [UIView]) {
+        elements.forEach { element in
+            if let label = element as? UILabel {
+                label.font = .systemFont(ofSize: 20, weight: .light)
+                label.textColor = .text
+            } else if let imageView = element as? UIImageView {
+                imageView.image?.withTintColor(.text)
+                imageView.image?.applyingSymbolConfiguration(UIImage.SymbolConfiguration.init(font: .systemFont(ofSize: 20, weight: .light)))
+            }
+        }
+    }
 }
