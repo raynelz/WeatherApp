@@ -31,11 +31,11 @@ enum SFArrowDirection: String {
 struct HumidityData: MeteorologicalDataProtocol {
     let text = UILabel()
     let value = UILabel()
-    let symbol = UIImageView(image: UIImage(named: "humidity"))
+    let symbol = UIImageView(image: UIImage(systemName: "humidity"))
 }
 
 struct WindData: MeteorologicalDataProtocol {
     let text = UILabel()
     let value = UILabel()
-    let symbol = UIImageView(image: UIImage(named: "wind"))
+    let symbol = UIImageView(image: UIImage(systemName: "wind"))
 }

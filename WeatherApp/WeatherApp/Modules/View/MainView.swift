@@ -54,7 +54,7 @@ extension MainView {
 
 private extension MainView {
     func setupViews() {
-        addSubviews(backgroundImageView, picker, averageTemperatureStack)
+        addSubviews(backgroundImageView, picker, averageTemperatureStack, windAndHumidityView)
     }
     
     func setupAppearance() {
@@ -77,6 +77,11 @@ private extension MainView {
             $0.trailing.equalToSuperview().inset(10)
             $0.centerY.equalToSuperview()
         }
+        
+        windAndHumidityView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(10)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).inset(30)
+        }
     }
 }
 
@@ -97,11 +102,19 @@ private extension MainView {
         let attachmentSize: CGFloat = size - 2
         
         let symbolAttachment = NSTextAttachment()
-        symbolAttachment.image = UIImage(systemName: arrow.rawValue)?.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: attachmentSize, weight: .light)))!.withTintColor(.text)
+        symbolAttachment.image = UIImage(systemName: arrow.rawValue)?
+            .applyingSymbolConfiguration(
+                .init(font: .systemFont(ofSize: attachmentSize, weight: .light))
+            )!
+            .withTintColor(.text)
         let symbolString = NSAttributedString(attachment: symbolAttachment)
         
         let degreesAttachment = NSTextAttachment()
-        degreesAttachment.image = UIImage(systemName: "degreesign.celsius")?.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: attachmentSize, weight: .light)))!.withTintColor(.text)
+        degreesAttachment.image = UIImage(systemName: "degreesign.celsius")?
+            .applyingSymbolConfiguration(
+                .init(font: .systemFont(ofSize: attachmentSize, weight: .light))
+            )!
+            .withTintColor(.text)
         let degreesString = NSAttributedString(attachment: degreesAttachment)
         
         let attributedText = NSAttributedString(string: text, attributes: [
