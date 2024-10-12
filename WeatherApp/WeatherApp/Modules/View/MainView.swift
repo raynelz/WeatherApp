@@ -47,7 +47,7 @@ extension MainView {
         
         windAndHumidityView.updateValues(humidityValue: data.humidity, windValue: data.windSpeed)
         
-        currentTemperatureLabel.text = "\(data.currentTemperature)"
+        currentTemperatureLabel.attributedText = setCurrentTemperature(data.currentTemperature)
     }
 }
 
@@ -65,9 +65,6 @@ private extension MainView {
         makeTemperatureStack()
         
         stripView.backgroundColor = .text
-        
-        currentTemperatureLabel.textColor = .text
-        currentTemperatureLabel.font = .systemFont(ofSize: 60, weight: .bold)
     }
     
     func setupLayout() {
@@ -82,7 +79,7 @@ private extension MainView {
         
         averageTemperatureStack.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(10)
-            $0.centerY.equalToSuperview()
+            $0.bottom.equalTo(currentTemperatureLabel.snp.bottom).offset(-10)
         }
         
         currentTemperatureLabel.snp.makeConstraints {
@@ -113,7 +110,33 @@ private extension MainView {
         [maxTemperatureLabel, minTemperatureLabel].forEach { averageTemperatureStack.addArrangedSubview($0) }
     }
     
-    func addAttachmentsToText(text: Double, arrow: SFArrowDirection) -> NSAttributedString {
+    func setCurrentTemperature(_ value: Int) -> NSAttributedString {
+        let attributetString = NSMutableAttributedString(
+            string: String(value),
+            attributes: [
+                .foregroundColor: UIColor.text,
+                .font: UIFont.systemFont(ofSize: 60, weight: .bold)
+            ]
+        )
+        
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(systemName: "degreesign.celsius")?
+            .withTintColor(.text)
+            .applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 30, weight: .medium)))
+        attachment.bounds = .init(
+            x: 0,
+            y: -2,
+            width: attachment.image?.size.width ?? 0,
+            height: attachment.image?.size.height ?? 0
+        )
+        let attachmentString = NSAttributedString(attachment: attachment)
+        
+        attributetString.append(attachmentString)
+        
+        return attributetString
+    }
+    
+    func addAttachmentsToText(text: Int, arrow: SFArrowDirection) -> NSAttributedString {
         
         let text = String(text)
         let size: CGFloat = 15

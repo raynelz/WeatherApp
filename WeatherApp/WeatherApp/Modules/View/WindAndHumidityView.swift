@@ -36,7 +36,7 @@ class WindAndHumidityView: UIView {
 
 // MARK: - Public Methods
 extension WindAndHumidityView {
-    func updateValues(humidityValue: Double, windValue: Double) {
+    func updateValues(humidityValue: Int, windValue: Int) {
         windData.value.text = "\(windValue) m/s"
         humidityData.value.text = "\(humidityValue) %"
     }
@@ -71,7 +71,7 @@ private extension WindAndHumidityView {
 
 private extension WindAndHumidityView {
     func makeElementsAppearance(_ elements: [MeteorologicalDataProtocol]) {
-        let size: CGFloat = 15
+        let size: CGFloat = 20
         elements.forEach { element in
             [element.text, element.value].forEach { label in
                 label.font = .systemFont(ofSize: size, weight: .light)

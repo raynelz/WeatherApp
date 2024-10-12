@@ -15,12 +15,12 @@ protocol MeteorologicalDataProtocol {
 }
 
 struct WeatherData {
-    let currentTemperature: Double
-    let maxTemperature: Double
-    let minTemperature: Double
+    let currentTemperature: Int
+    let maxTemperature: Int
+    let minTemperature: Int
     let description: String
-    let windSpeed: Double
-    let humidity: Double
+    let windSpeed: Int
+    let humidity: Int
 }
 
 enum SFArrowDirection: String {
