@@ -11,7 +11,7 @@ import SnapKit
 
 class MainView: UIView {
     // MARK: - UI Elements
-    private let picker = UIPickerView()
+    let picker = UIPickerView()
     
     private let maxTemperatureLabel = UILabel()
     private let minTemperatureLabel = UILabel()
@@ -48,6 +48,8 @@ extension MainView {
         windAndHumidityView.updateValues(humidityValue: data.humidity, windValue: data.windSpeed)
         
         currentTemperatureLabel.attributedText = setCurrentTemperature(data.currentTemperature)
+        
+        desсriptionLabel.text = data.description
     }
 }
 
@@ -56,7 +58,7 @@ extension MainView {
 
 private extension MainView {
     func setupViews() {
-        addSubviews(backgroundImageView, picker, averageTemperatureStack, windAndHumidityView, stripView, currentTemperatureLabel)
+        addSubviews(backgroundImageView, picker, averageTemperatureStack, windAndHumidityView, stripView, currentTemperatureLabel, desсriptionLabel)
     }
     
     func setupAppearance() {
@@ -65,6 +67,9 @@ private extension MainView {
         makeTemperatureStack()
         
         stripView.backgroundColor = .text
+        
+        desсriptionLabel.font = .systemFont(ofSize: 30, weight: .regular)
+        desсriptionLabel.textColor = .text
     }
     
     func setupLayout() {
@@ -78,7 +83,7 @@ private extension MainView {
         }
         
         averageTemperatureStack.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(10)
+            $0.trailing.equalTo(stripView.snp.trailing)
             $0.bottom.equalTo(currentTemperatureLabel.snp.bottom).offset(-10)
         }
         
@@ -89,8 +94,13 @@ private extension MainView {
         
         stripView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.bottom.equalTo(windAndHumidityView.snp.top).offset(-20)
+            $0.bottom.equalTo(desсriptionLabel.snp.top).offset(-10)
             $0.height.equalTo(2)
+        }
+        
+        desсriptionLabel.snp.makeConstraints {
+            $0.bottom.equalTo(windAndHumidityView.snp.top).offset(-10)
+            $0.leading.equalTo(stripView.snp.leading)
         }
         
         windAndHumidityView.snp.makeConstraints {
