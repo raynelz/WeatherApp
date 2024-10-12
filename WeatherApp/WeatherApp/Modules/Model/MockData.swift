@@ -9,8 +9,8 @@ import Foundation
 
 struct MockData {
     static let mockData: [WeatherData] = [
-        .init(currentTemperature: 28, maxTemperature: 32, minTemperature: 18, description: "Солнечно и ясно", windSpeed: 10, humidity: 54),
-        .init(currentTemperature: 16, maxTemperature: 18, minTemperature: 10, description: "Небольшой дождь", windSpeed: 7, humidity: 68)
+        .init(city: "Москва", currentTemperature: 28, maxTemperature: 32, minTemperature: 18, description: "Солнечно и ясно", windSpeed: 10, humidity: 54),
+        .init(city: "Питер", currentTemperature: 16, maxTemperature: 18, minTemperature: 10, description: "Небольшой дождь", windSpeed: 7, humidity: 68)
     ]
         
 }

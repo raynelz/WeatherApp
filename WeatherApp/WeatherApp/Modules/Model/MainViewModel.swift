@@ -15,6 +15,7 @@ protocol MeteorologicalDataProtocol {
 }
 
 struct WeatherData {
+    let city: String
     let currentTemperature: Int
     let maxTemperature: Int
     let minTemperature: Int
