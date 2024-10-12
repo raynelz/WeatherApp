@@ -46,6 +46,8 @@ extension MainView {
         minTemperatureLabel.attributedText = addAttachmentsToText(text: data.minTemperature, arrow: SFArrowDirection.down)
         
         windAndHumidityView.updateValues(humidityValue: data.humidity, windValue: data.windSpeed)
+        
+        currentTemperatureLabel.text = "\(data.currentTemperature)"
     }
 }
 
@@ -54,13 +56,18 @@ extension MainView {
 
 private extension MainView {
     func setupViews() {
-        addSubviews(backgroundImageView, picker, averageTemperatureStack, windAndHumidityView)
+        addSubviews(backgroundImageView, picker, averageTemperatureStack, windAndHumidityView, stripView, currentTemperatureLabel)
     }
     
     func setupAppearance() {
         self.backgroundColor = .white
         
         makeTemperatureStack()
+        
+        stripView.backgroundColor = .text
+        
+        currentTemperatureLabel.textColor = .text
+        currentTemperatureLabel.font = .systemFont(ofSize: 60, weight: .bold)
     }
     
     func setupLayout() {
@@ -78,8 +85,19 @@ private extension MainView {
             $0.centerY.equalToSuperview()
         }
         
+        currentTemperatureLabel.snp.makeConstraints {
+            $0.leading.equalTo(stripView.snp.leading)
+            $0.bottom.equalTo(stripView.snp.top).offset(-10)
+        }
+        
+        stripView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalTo(windAndHumidityView.snp.top).offset(-20)
+            $0.height.equalTo(2)
+        }
+        
         windAndHumidityView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(10)
+            $0.leading.equalTo(stripView.snp.leading)
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).inset(30)
         }
     }

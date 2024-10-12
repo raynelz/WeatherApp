@@ -79,11 +79,12 @@ private extension WindAndHumidityView {
             }
             if let image = element.symbol.image {
                 element.symbol.image = image
-                    .withTintColor(.text)
+                    .withRenderingMode(.alwaysTemplate)
                     .applyingSymbolConfiguration(
                         UIImage.SymbolConfiguration(font: .systemFont(ofSize: size, weight: .light))
                     )
             }
+            element.symbol.tintColor = .text
         }
     }
     func setStack(stack: UIStackView,_ data:[UIView]) {
@@ -104,7 +105,7 @@ private extension WindAndHumidityView {
     func setGeneralStack(_ stacks: [UIStackView]) {
         generalStack.axis = .horizontal
         generalStack.distribution = .fill
-        generalStack.spacing = 10
+        generalStack.spacing = 20
         stacks.forEach {
             generalStack.addArrangedSubview($0)
         }
