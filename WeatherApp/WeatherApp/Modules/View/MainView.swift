@@ -17,9 +17,7 @@ class MainView: UIView {
     private let minTemperatureLabel = UILabel()
     private let averageTemperatureStack = UIStackView()
     
-    private let humidityLabel = UILabel()
-    private let windSpeedLabel = UILabel()
-    
+    private let windAndHumidityView = WindAndHumidityView()
     private let currentTemperatureLabel = UILabel()
     
     private let stripView = UIView()
@@ -28,7 +26,7 @@ class MainView: UIView {
     
     private let backgroundImageView = UIImageView(image: UIImage(named: "backgroundNoise"))
 
-    // MARK: - Life Cycle
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -46,6 +44,8 @@ extension MainView {
     func updateData(_ data: WeatherData) {
         maxTemperatureLabel.attributedText = addAttachmentsToText(text: data.maxTemperature, arrow: SFArrowDirection.up)
         minTemperatureLabel.attributedText = addAttachmentsToText(text: data.minTemperature, arrow: SFArrowDirection.down)
+        
+        windAndHumidityView.updateValues(humidityValue: data.humidity, windValue: data.windSpeed)
     }
 }
 
@@ -93,7 +93,7 @@ private extension MainView {
     func addAttachmentsToText(text: Double, arrow: SFArrowDirection) -> NSAttributedString {
         
         let text = String(text)
-        let size: CGFloat = 20
+        let size: CGFloat = 15
         let attachmentSize: CGFloat = size - 2
         
         let symbolAttachment = NSTextAttachment()
@@ -105,7 +105,7 @@ private extension MainView {
         let degreesString = NSAttributedString(attachment: degreesAttachment)
         
         let attributedText = NSAttributedString(string: text, attributes: [
-            .font: UIFont.systemFont(ofSize: size, weight: .medium),
+            .font: UIFont.systemFont(ofSize: size, weight: .light),
             .foregroundColor: UIColor.text
         ])
         
