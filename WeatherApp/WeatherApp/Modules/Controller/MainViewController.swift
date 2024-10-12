@@ -13,18 +13,16 @@ class MainViewController: GenericViewController<MainView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
+        setupUI()
         setupDelegates()
-
     }
 }
 
 // MARK: - Private Methods
 private extension MainViewController {
-    func updateUI() {
-        rootView.updateData(data[0])
+    func setupUI() {
+        rootView.updateData(data.first!)
     }
-    
     func setupDelegates() {
         rootView.picker.delegate = self
         rootView.picker.dataSource = self
@@ -43,7 +41,7 @@ private extension MainViewController {
 
 extension MainViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
+        rootView.updateData(data[row])
     }
 }
 
