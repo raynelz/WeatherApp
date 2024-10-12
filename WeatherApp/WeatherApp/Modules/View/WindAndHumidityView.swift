@@ -10,18 +10,8 @@ import SnapKit
 
 class WindAndHumidityView: UIView {
     
-    private let humidityTextLabel = UILabel()
-    private let windTextLabel = UILabel()
-    
-    private let humidityPercentLabel = UILabel()
-    private let windSpeedLabel = UILabel()
-    
-    private let humiditySymbol = UIImageView(image: UIImage(named: "humidity"))
-    private let windSymbol = UIImageView(image: UIImage(named: "wind"))
-    
-    private let symbolsStack = UIStackView()
-    private let valuesStack = UIStackView()
-    private let labelsStack = UIStackView()
+    let windData = WindData()
+    let humidityData = HumidityData()
     
     private let generalStack = UIStackView()
     
@@ -43,8 +33,8 @@ class WindAndHumidityView: UIView {
 // MARK: - Public Methods
 extension WindAndHumidityView {
     func updateValues(humidityValue: Double, windValue: Double) {
-        windSpeedLabel.text = "\(windValue) m/s"
-        humidityPercentLabel.text = "\(humidityValue) %"
+        windData.value.text = "\(windValue) m/s"
+        humidityData.value.text = "\(humidityValue) %"
     }
 }
 
@@ -55,7 +45,7 @@ private extension WindAndHumidityView {
     }
     
     func setupAppearance() {
-        
+        makeElementsAppearance([windData, humidityData])
     }
     
     func setupLayout() {
@@ -64,14 +54,18 @@ private extension WindAndHumidityView {
 }
 
 private extension WindAndHumidityView {
-    func makeText(elements: [UIView]) {
+    func makeElementsAppearance(_ elements: [MeteorologicalDataProtocol]) {
         elements.forEach { element in
-            if let label = element as? UILabel {
+            [element.text, element.value].forEach { label in
                 label.font = .systemFont(ofSize: 20, weight: .light)
                 label.textColor = .text
-            } else if let imageView = element as? UIImageView {
-                imageView.image?.withTintColor(.text)
-                imageView.image?.applyingSymbolConfiguration(UIImage.SymbolConfiguration.init(font: .systemFont(ofSize: 20, weight: .light)))
+            }
+            if let image = element.symbol.image {
+                element.symbol.image = image
+                    .withTintColor(.text)
+                    .applyingSymbolConfiguration(
+                        UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .light))
+                    )
             }
         }
     }
