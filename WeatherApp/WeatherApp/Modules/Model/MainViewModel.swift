@@ -40,3 +40,9 @@ struct WindData: MeteorologicalDataProtocol {
     let value = UILabel()
     let symbol = UIImageView(image: UIImage(systemName: "wind"))
 }
+
+enum Cities: String, CaseIterable {
+    case moscow = "Москва"
+    case saintPetersburg = "Санкт-Петербург"
+    case orenburg = "Оренбург"
+}

@@ -8,11 +8,15 @@
 import Foundation
 
 /// Структура для хранения общего ответа с информацией о погоде.
-struct WeatherResponse {
+struct WeatherResponse: Decodable {
+    /// Основная информация о погоде
+    let weather: [Weather]
     /// Основная информация о погоде (температура, влажность).
     let main: MainWeather
     /// Информация о ветре.
     let wind: WindWeather
+    /// Название города
+    let name: String
 }
 
 /// Структура для хранения основной информации о погоде.
@@ -31,4 +35,10 @@ struct MainWeather: Decodable {
 struct WindWeather: Decodable {
     /// Скорость ветра.
     let speed: Double
+}
+
+/// Структура для описания погоды.
+struct Weather: Decodable {
+    /// Описание 
+    let description: String
 }

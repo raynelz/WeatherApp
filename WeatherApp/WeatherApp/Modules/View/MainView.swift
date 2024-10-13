@@ -70,6 +70,7 @@ private extension MainView {
         
         desсriptionLabel.font = .systemFont(ofSize: 30, weight: .regular)
         desсriptionLabel.textColor = .text
+        
     }
     
     func setupLayout() {
