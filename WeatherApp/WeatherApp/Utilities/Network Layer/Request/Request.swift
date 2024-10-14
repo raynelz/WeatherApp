@@ -24,12 +24,15 @@ class NetworkService {
             }
             
             do {
-                let decodedData = try JSONDecoder().decode(T.self, from: data)
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                let decodedData = try jsonDecoder.decode(T.self, from: data)
                 completion(.success(decodedData))
             } catch {
                 completion(.failure(error))
             }
         }
+
         .resume()
     }
 }

@@ -7,38 +7,55 @@
 
 import Foundation
 
-/// Структура для хранения общего ответа с информацией о погоде.
+/// Ответ API с информацией о погоде, текущими условиями и прогнозом.
 struct WeatherResponse: Decodable {
-    /// Основная информация о погоде
-    let weather: [Weather]
-    /// Основная информация о погоде (температура, влажность).
-    let main: MainWeather
-    /// Информация о ветре.
-    let wind: WindWeather
-    /// Название города
+    /// Информация о местоположении.
+    let location: Location
+    /// Текущие погодные условия.
+    let current: CurrentWeather
+    /// Прогноз погоды на несколько дней.
+    let forecast: Forecast
+}
+
+/// Название города.
+struct Location: Decodable {
     let name: String
 }
 
-/// Структура для хранения основной информации о погоде.
-struct MainWeather: Decodable {
-    /// Текущая температура.
-    let temp: Double
-    /// Минимальная температура.
-    let tempMin: Double
-    /// Максимальная температура.
-    let tempMax: Double
-    /// Влажность воздуха.
-    let humidity: Double
+/// Текущие погодные условия.
+struct CurrentWeather: Decodable {
+    /// Температура в градусах Цельсия.
+    let tempC: Double
+    /// Описание погодного состояния.
+    let condition: WeatherCondition
+    /// Скорость ветра в км/ч.
+    let windKph: Double
+    /// Влажность в процентах.
+    let humidity: Int
 }
 
-/// Структура для хранения данных о ветре.
-struct WindWeather: Decodable {
-    /// Скорость ветра.
-    let speed: Double
+/// Прогноз погоды на несколько дней.
+struct Forecast: Decodable {
+    /// Массив прогнозов по дням.
+    let forecastday: [ForecastDay]
 }
 
-/// Структура для описания погоды.
-struct Weather: Decodable {
-    /// Описание 
-    let description: String
+/// Прогноз погоды на конкретный день.
+struct ForecastDay: Decodable {
+    /// Данные о погоде на день.
+    let day: DayWeather
+}
+
+/// Данные о максимальной и минимальной температуре.
+struct DayWeather: Decodable {
+    /// Максимальная температура в градусах Цельсия.
+    let maxtempC: Double
+    /// Минимальная температура в градусах Цельсия.
+    let mintempC: Double
+}
+
+/// Описание погодных условий.
+struct WeatherCondition: Decodable {
+    /// Текстовое описание состояния погоды.
+    let text: String
 }

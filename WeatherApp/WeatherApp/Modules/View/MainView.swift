@@ -41,7 +41,9 @@ class MainView: UIView {
 }
 // MARK: - Public Methods
 extension MainView {
-    func updateData(_ data: WeatherData) {
+    func updateData(_ data: WeatherData?) {
+        guard let data else { return }
+        
         maxTemperatureLabel.attributedText = addAttachmentsToText(text: data.maxTemperature, arrow: SFArrowDirection.up)
         minTemperatureLabel.attributedText = addAttachmentsToText(text: data.minTemperature, arrow: SFArrowDirection.down)
         
