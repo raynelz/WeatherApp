@@ -42,7 +42,7 @@ struct WindData: MeteorologicalDataProtocol {
 }
 
 enum Cities: String, CaseIterable {
-    case moscow = "https://api.openweathermap.org/data/2.5/weather?q=Москва&appid=d2940a6a7734ff5d485485e6a5adffbc&units=metric&lang=ru"
-    case saintPetersburg = "https://api.openweathermap.org/data/2.5/weather?q=Санкт-Петербург&appid=d2940a6a7734ff5d485485e6a5adffbc&units=metric&lang=ru"
-    case orenburg = "https://api.openweathermap.org/data/2.5/weather?q=Оренбург&appid=d2940a6a7734ff5d485485e6a5adffbc&units=metric&lang=ru"
+    case moscow = "Москва"
+    case saintPetersburg = "Санкт-Петербург"
+    case orenburg = "Оренбург"
 }

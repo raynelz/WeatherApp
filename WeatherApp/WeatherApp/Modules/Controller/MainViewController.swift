@@ -9,7 +9,7 @@ import UIKit
 
 class MainViewController: GenericViewController<MainView> {
     
-    let data = MockData.mockData
+    lazy var data = [convertToWeatherData(MockData.mockWeatherResponse)]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +20,20 @@ class MainViewController: GenericViewController<MainView> {
 
 // MARK: - Private Methods
 private extension MainViewController {
+//    func fetchData() async {
+//        let networkService = NetworkService()
+//        networkService.fetchData(url: Cities.moscow.rawValue) { (result: Result<WeatherResponse, Error>) in
+//            switch result {
+//            case .success(let data):
+//                self.data = data
+//            case .failure:
+//                let alert = UIAlertController(title: "Error", message: "Something went wrong", preferredStyle: .alert)
+//                alert.addAction(.init(title: "OK", style: .default))
+//                self.present(alert, animated: true)
+//            }
+//        }
+//    }
+    
     func setupUI() {
         rootView.updateData(data.first!)
     }
@@ -36,6 +50,19 @@ private extension MainViewController {
             ]
         )
         return attributedString
+    }
+    
+    func convertToWeatherData(_ data: WeatherResponse) -> WeatherData {
+        let weatherData = WeatherData(
+            city: data.name,
+            currentTemperature: Int(data.main.temp),
+            maxTemperature: Int(data.main.tempMax),
+            minTemperature: Int(data.main.tempMin),
+            description: data.weather.first?.description ?? "",
+            windSpeed: Int(data.wind.speed),
+            humidity: Int(data.main.humidity)
+        )
+        return weatherData
     }
 }
 

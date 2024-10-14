@@ -17,7 +17,7 @@ class NetworkService {
             string: url
         )!
         
-        URLSession.shared.dataTask(with: url) { data, resonse, error in
+        URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
                 completion(.failure(error!))
                 return
