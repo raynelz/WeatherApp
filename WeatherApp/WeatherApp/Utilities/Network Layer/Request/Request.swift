@@ -7,21 +7,27 @@
 
 import Foundation
 
-class Request {
-
-    func fetchData(city: Cities.RawValue) async -> WeatherResponse {
+class NetworkService {
+    
+    func fetchData<T: Decodable>(
+        url: String,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) {
         let url = URL(
-            string: "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=d2940a6a7734ff5d485485e6a5adffbc&units=metric&lang=ru"
+            string: url
         )!
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        
+        URLSession.shared.dataTask(with: url) { data, resonse, error in
             guard let data = data, error == nil else {
+                completion(.failure(error!))
                 return
             }
             
             do {
-                let weather = try JSONDecoder().decode(WeatherResponse.self, from: data)
+                let decodedData = try JSONDecoder().decode(T.self, from: data)
+                completion(.success(decodedData))
             } catch {
-                return
+                completion(.failure(error))
             }
         }
         .resume()
