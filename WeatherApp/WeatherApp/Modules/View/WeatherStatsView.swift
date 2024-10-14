@@ -8,9 +8,13 @@
 import UIKit
 import SnapKit
 
-class WindAndHumidityView: UIView {
+/// Вью для отображения погодных данных: скорости ветра и влажности
+class WeatherStatsView: UIView {
     
+    /// Данные о ветре, включая текст и символ
     let windData = WindData()
+    
+    /// Данные о влажности, включая текст и символ
     let humidityData = HumidityData()
     
     private let symbolStack = UIStackView()
@@ -35,7 +39,8 @@ class WindAndHumidityView: UIView {
 }
 
 // MARK: - Public Methods
-extension WindAndHumidityView {
+extension WeatherStatsView {
+    /// Обновляет значения ветра и влажности
     func updateValues(humidityValue: Int, windValue: Int) {
         windData.value.text = "\(windValue) km/h"
         humidityData.value.text = "\(humidityValue) %"
@@ -43,7 +48,7 @@ extension WindAndHumidityView {
 }
 
 // MARK: - Private Methods
-private extension WindAndHumidityView {
+private extension WeatherStatsView {
     func setupViews() {
         self.addSubviews(generalStack)
     }
@@ -69,7 +74,7 @@ private extension WindAndHumidityView {
     }
 }
 
-private extension WindAndHumidityView {
+private extension WeatherStatsView {
     func makeElementsAppearance(_ elements: [MeteorologicalDataProtocol]) {
         let size: CGFloat = 20
         elements.forEach { element in

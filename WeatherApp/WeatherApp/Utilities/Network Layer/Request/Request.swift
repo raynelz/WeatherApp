@@ -7,8 +7,9 @@
 
 import Foundation
 
+/// Сетевой сервис для выполнения HTTP-запросов и декодирования данных.
 class NetworkService {
-    
+    /// Дженерик метод который выполняет HTTP-запрос и декодирует ответ в указанный тип данных.
     func fetchData<T: Decodable>(
         url: String,
         completion: @escaping (Result<T, Error>) -> Void

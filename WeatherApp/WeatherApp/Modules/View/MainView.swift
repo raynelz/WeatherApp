@@ -8,24 +8,26 @@
 import UIKit
 import SnapKit
 
-
+/// Основной класс для отображения UI элементов главного экрана приложения
 class MainView: UIView {
     // MARK: - UI Elements
-    /// PickerView внутри которого находятся города для фетчинга данных
+    /// PickerView для выбора города и получения данных о погоде
     let picker = UIPickerView()
     
+    // MARK: - Other UI Elements
     private let pickerButton = UIButton()
-    
     private let maxTemperatureLabel = UILabel()
     private let minTemperatureLabel = UILabel()
     private let averageTemperatureStack = UIStackView()
     
-    private let windAndHumidityView = WindAndHumidityView()
+    private let windAndHumidityView = WeatherStatsView()
     private let currentTemperatureLabel = UILabel()
     
     private let stripView = UIView()
     
     private let desсriptionLabel = UILabel()
+    
+    private let temperatureShapeImageView = UIImageView()
     
     private let backgroundImageView = UIImageView(image: UIImage(named: "backgroundNoise"))
 
@@ -44,9 +46,11 @@ class MainView: UIView {
 }
 // MARK: - Public Methods
 extension MainView {
+    /// Метод MainView который обновляет все данные на экране
     func updateData(_ data: WeatherData?) {
         guard let data else { return }
         
+        temperatureShapeImageView.image = UIImage(named: data.currentTemperature > 15 ? "HotShape" : "ColdShape")
         pickerButton.setTitle(data.city, for: .normal)
         maxTemperatureLabel.attributedText = addAttachmentsToText(text: data.maxTemperature, arrow: SFArrowDirection.up)
         minTemperatureLabel.attributedText = addAttachmentsToText(text: data.minTemperature, arrow: SFArrowDirection.down)
@@ -64,7 +68,7 @@ extension MainView {
 
 private extension MainView {
     func setupViews() {
-        addSubviews(backgroundImageView, picker, averageTemperatureStack, windAndHumidityView, stripView, currentTemperatureLabel, desсriptionLabel, pickerButton)
+        addSubviews(backgroundImageView, temperatureShapeImageView, picker, averageTemperatureStack, windAndHumidityView, stripView, currentTemperatureLabel, desсriptionLabel, pickerButton)
     }
     
     func setupAppearance() {
@@ -79,7 +83,7 @@ private extension MainView {
         
         picker.isHidden = true
         
-        pickerButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .regular)
+        pickerButton.titleLabel?.font = .systemFont(ofSize: 30, weight: .semibold)
         pickerButton.setTitleColor(.text, for: .normal)
         pickerButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
     }
@@ -87,6 +91,12 @@ private extension MainView {
     func setupLayout() {
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        temperatureShapeImageView.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
         }
         
         pickerButton.snp.makeConstraints {

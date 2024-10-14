@@ -7,9 +7,10 @@
 
 import UIKit
 
+/// ViewController для управления `MainView` и фетчинга погодных данных
 class MainViewController: GenericViewController<MainView> {
     
-    var data: WeatherData? = nil
+    private var data: WeatherData? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
