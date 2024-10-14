@@ -11,7 +11,10 @@ import SnapKit
 
 class MainView: UIView {
     // MARK: - UI Elements
+    /// PickerView внутри которого находятся города для фетчинга данных
     let picker = UIPickerView()
+    
+    private let pickerButton = UIButton()
     
     private let maxTemperatureLabel = UILabel()
     private let minTemperatureLabel = UILabel()
@@ -44,6 +47,7 @@ extension MainView {
     func updateData(_ data: WeatherData?) {
         guard let data else { return }
         
+        pickerButton.setTitle(data.city, for: .normal)
         maxTemperatureLabel.attributedText = addAttachmentsToText(text: data.maxTemperature, arrow: SFArrowDirection.up)
         minTemperatureLabel.attributedText = addAttachmentsToText(text: data.minTemperature, arrow: SFArrowDirection.down)
         
@@ -60,7 +64,7 @@ extension MainView {
 
 private extension MainView {
     func setupViews() {
-        addSubviews(backgroundImageView, picker, averageTemperatureStack, windAndHumidityView, stripView, currentTemperatureLabel, desсriptionLabel)
+        addSubviews(backgroundImageView, picker, averageTemperatureStack, windAndHumidityView, stripView, currentTemperatureLabel, desсriptionLabel, pickerButton)
     }
     
     func setupAppearance() {
@@ -73,6 +77,11 @@ private extension MainView {
         desсriptionLabel.font = .systemFont(ofSize: 30, weight: .regular)
         desсriptionLabel.textColor = .text
         
+        picker.isHidden = true
+        
+        pickerButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .regular)
+        pickerButton.setTitleColor(.text, for: .normal)
+        pickerButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
     }
     
     func setupLayout() {
@@ -80,8 +89,13 @@ private extension MainView {
             $0.edges.equalToSuperview()
         }
         
+        pickerButton.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.centerX.equalToSuperview()
+        }
+        
         picker.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalTo(pickerButton.snp.bottom).offset(10)
             $0.horizontalEdges.equalToSuperview().inset(10)
         }
         
@@ -183,5 +197,27 @@ private extension MainView {
         combinedText.append(degreesString)
         
         return combinedText
+    }
+    
+    @objc func handleTap(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.2) {
+            sender.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.2) {
+                sender.transform = .identity
+            }
+        }
+        
+        UIView.animate(withDuration: 0.2) {
+            self.picker.isHidden.toggle()
+            
+            sender.alpha = 0
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                UIView.animate(withDuration: 0.2) {
+                    sender.alpha = 1
+                }
+            }
+        }
     }
 }
