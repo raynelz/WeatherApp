@@ -1,8 +1,8 @@
 //
 //  SceneDelegate.swift
-//  SpaceProject
+//  WeatherApp
 //
-//  Created by Захар Литвинчук on 10.08.2024.
+//  Created by Станислав Никулин on 10.10.2024.
 //
 
 import UIKit
@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
 
-        let rootViewController = ViewController()
+        let rootViewController = MainViewController()
         let navigationController = UINavigationController(rootViewController: rootViewController)
 
         window?.rootViewController = navigationController
