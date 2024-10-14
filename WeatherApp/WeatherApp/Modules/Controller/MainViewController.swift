@@ -48,8 +48,8 @@ private extension MainViewController {
         rootView.updateData(data)
     }
     func setupDelegates() {
-//        rootView.picker.delegate = self
-//        rootView.picker.dataSource = self
+        rootView.picker.delegate = self
+        rootView.picker.dataSource = self
     }
     
     func makeAttributedString(_ text: String) -> NSAttributedString {
@@ -79,22 +79,25 @@ private extension MainViewController {
     }
 }
 
-//extension MainViewController: UIPickerViewDelegate {
-//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        rootView.updateData(data[row])
-//    }
-//}
-//
-//extension MainViewController: UIPickerViewDataSource {
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        1
-//    }
-//    
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        data.count
-//    }
-//    
-//    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-//        makeAttributedString(data[row].city)
-//    }
-//}
+extension MainViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        Task {
+            await fetchData(city: Cities.allCases[row].rawValue)
+        }
+        rootView.updateData(data)
+    }
+}
+
+extension MainViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        Cities.allCases.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        makeAttributedString(Cities.allCases[row].rawValue)
+    }
+}

@@ -37,7 +37,7 @@ class WindAndHumidityView: UIView {
 // MARK: - Public Methods
 extension WindAndHumidityView {
     func updateValues(humidityValue: Int, windValue: Int) {
-        windData.value.text = "\(windValue) m/s"
+        windData.value.text = "\(windValue) km/h"
         humidityData.value.text = "\(humidityValue) %"
     }
 }
