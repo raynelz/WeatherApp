@@ -11,18 +11,15 @@ import SnapKit
 /// Основной класс для отображения UI элементов главного экрана приложения
 class MainView: UIView {
     // MARK: - UI Elements
-    /// PickerView для выбора города и получения данных о погоде
-    let picker = UIPickerView()
-    
+
     // MARK: - Other UI Elements
-    private let pickerButton = UIButton()
     private let maxTemperatureLabel = UILabel()
     private let minTemperatureLabel = UILabel()
     private let averageTemperatureStack = UIStackView()
-    
+
     private let windAndHumidityView = WeatherStatsView()
     private let currentTemperatureLabel = UILabel()
-    
+
     private let stripView = UIView()
     
     private let desсriptionLabel = UILabel()
@@ -44,31 +41,20 @@ class MainView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-// MARK: - Public Methods
-extension MainView {
-    /// Метод MainView который обновляет все данные на экране
-    func updateData(_ data: WeatherData?) {
-        guard let data else { return }
-        
-        temperatureShapeImageView.image = UIImage(named: data.currentTemperature > 15 ? "HotShape" : "ColdShape")
-        pickerButton.setTitle(data.city, for: .normal)
-        maxTemperatureLabel.attributedText = addAttachmentsToText(text: data.maxTemperature, arrow: SFArrowDirection.up)
-        minTemperatureLabel.attributedText = addAttachmentsToText(text: data.minTemperature, arrow: SFArrowDirection.down)
-        
-        windAndHumidityView.updateValues(humidityValue: data.humidity, windValue: data.windSpeed)
-        
-        currentTemperatureLabel.attributedText = setCurrentTemperature(data.currentTemperature)
-        
-        desсriptionLabel.text = data.description
-    }
-}
-
 
 // MARK: - Main Private Methods
 
 private extension MainView {
     func setupViews() {
-        addSubviews(backgroundImageView, temperatureShapeImageView, picker, averageTemperatureStack, windAndHumidityView, stripView, currentTemperatureLabel, desсriptionLabel, pickerButton)
+		addSubviews(
+			backgroundImageView,
+			temperatureShapeImageView,
+			averageTemperatureStack,
+			windAndHumidityView,
+			stripView,
+			currentTemperatureLabel,
+			desсriptionLabel
+		)
     }
     
     func setupAppearance() {
@@ -80,12 +66,18 @@ private extension MainView {
         
         desсriptionLabel.font = .systemFont(ofSize: 30, weight: .regular)
         desсriptionLabel.textColor = .text
-        
-        picker.isHidden = true
-        
-        pickerButton.titleLabel?.font = .systemFont(ofSize: 30, weight: .semibold)
-        pickerButton.setTitleColor(.text, for: .normal)
-        pickerButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+		
+		
+		temperatureShapeImageView.image = UIImage(named: "HotShape")
+
+		maxTemperatureLabel.attributedText = addAttachmentsToText(text: 24, arrow: SFArrowDirection.up)
+		minTemperatureLabel.attributedText = addAttachmentsToText(text: 12, arrow: SFArrowDirection.down)
+		
+		windAndHumidityView.updateValues(humidityValue: 3, windValue: 2)
+		
+		currentTemperatureLabel.attributedText = setCurrentTemperature(20)
+		
+		desсriptionLabel.text = "Солнечно"
     }
     
     func setupLayout() {
@@ -97,16 +89,6 @@ private extension MainView {
             $0.leading.equalToSuperview()
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
-        }
-        
-        pickerButton.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            $0.centerX.equalToSuperview()
-        }
-        
-        picker.snp.makeConstraints {
-            $0.top.equalTo(pickerButton.snp.bottom).offset(10)
-            $0.horizontalEdges.equalToSuperview().inset(10)
         }
         
         averageTemperatureStack.snp.makeConstraints {
@@ -207,27 +189,5 @@ private extension MainView {
         combinedText.append(degreesString)
         
         return combinedText
-    }
-    
-    @objc func handleTap(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.2) {
-            sender.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-        } completion: { _ in
-            UIView.animate(withDuration: 0.2) {
-                sender.transform = .identity
-            }
-        }
-        
-        UIView.animate(withDuration: 0.2) {
-            self.picker.isHidden.toggle()
-            
-            sender.alpha = 0
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                UIView.animate(withDuration: 0.2) {
-                    sender.alpha = 1
-                }
-            }
-        }
     }
 }
